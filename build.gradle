@@ -20,8 +20,12 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    //Anotaciones: @GetMapping, @PostMapping, @RequestParam
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    //Etiquetas. th:block,
+    implementation 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
