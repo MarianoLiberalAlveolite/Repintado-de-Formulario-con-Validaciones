@@ -39,8 +39,8 @@ public class PrincipalController {
              @RequestParam (required = false) String comentarios,
              @RequestParam (defaultValue = "false") boolean licencia,
              @RequestParam (required = false) String archivo,
-             @RequestParam (required = false) Integer imagenX,
-             @RequestParam (required = false) Integer imagenY,
+             @RequestParam (name= "enviarFlecha.x", defaultValue = "0") int imagenX,
+             @RequestParam (name= "enviarFlecha.y", defaultValue = "0") int imagenY,
              Model modelo) {
 
         int contadorParametros = 0;
@@ -53,7 +53,7 @@ public class PrincipalController {
         if (comentarios != null) contadorParametros++;
         if (archivo != null) contadorParametros++;
         if (licencia) contadorParametros++;
-        if (imagenX != null && imagenY != null) contadorParametros++;
+        if (imagenX != 0 || imagenY != 0) contadorParametros++;
 
         iteraciones ++;
         modelo.addAttribute("titulo", "Formulario Repintado");
@@ -66,8 +66,8 @@ public class PrincipalController {
         modelo.addAttribute("musica_seleccionada", musicasSeleccionadas);
         modelo.addAttribute("comentarios", comentarios);
         modelo.addAttribute("licencia", licencia);
-        modelo.addAttribute("imagenX", imagenX != null ? imagenX : 0);
-        modelo.addAttribute("imagenY", imagenY != null ? imagenY : 0);
+        modelo.addAttribute("imagenX", imagenX);
+        modelo.addAttribute("imagenY", imagenY);
         modelo.addAttribute("archivo", archivo);
         modelo.addAttribute("contadorParametros", contadorParametros);
 

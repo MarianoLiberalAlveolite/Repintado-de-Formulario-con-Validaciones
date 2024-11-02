@@ -76,10 +76,8 @@
         <fieldset>
             <input type="submit" th:value="#{eco-parametros.enviar}">
             <input type="reset" th:value="#{eco-parametros.resetear}">
-            <input type="image" src="/img/flecha.jpg" alt="Enviar formulario" width="35px" height="35px">
-            <!--<button type="submit">
-                <img src="/img/flecha.jpg" alt="Enviar formulario" width="50" height="50">
-            </button>-->
+            <input type="image" th:src="@{img/enviarFlecha.png}"
+                   name="enviarFlecha" alt="Enviar" width="35px" height="35px">
         </fieldset>
         <fieldset>
             <!-- Mostrar coordenadas x e y del clic en el formulario repintado -->
