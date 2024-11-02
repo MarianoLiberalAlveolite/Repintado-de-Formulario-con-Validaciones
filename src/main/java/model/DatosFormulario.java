@@ -13,7 +13,7 @@ public class DatosFormulario {
     private String usuario;
     private String clave;
     private String pi;
-    private String pigeneroSeleccionado;
+    private String generoSeleccionado;
     private ArrayList<String> aficiones;
     private String pais;
     private ArrayList<String> musica;

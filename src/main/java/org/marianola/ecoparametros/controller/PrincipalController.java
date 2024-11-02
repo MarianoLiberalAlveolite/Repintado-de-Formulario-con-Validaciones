@@ -23,10 +23,20 @@ public class PrincipalController {
         modelo.addAttribute("titulo", "Formulario Original");
         modelo.addAttribute("usuario", "Pepe");
         modelo.addAttribute("iteraciones", 1);
+        modelo.addAttribute("aficiones_seleccionadas", new ArrayList<String>() {{
+            add("D"); // Deporte
+            add("P"); // Pintura
+            add("V"); // Viajes
+        }});
+        modelo.addAttribute("musica_seleccionada", new ArrayList<String>() {{
+            add("F"); // Funky
+            add("R"); // Rock
+        }});
+        modelo.addAttribute("pais_seleccionado", "F"); // Francia
         return "formulario/formulario";
     }
 
-    @GetMapping  ("recibe-parametros")
+    @PostMapping  ("recibe-parametros")
     //@GetMapping()
     public String recibeParametros
             (@RequestParam (required = false) String usuario,
