@@ -20,8 +20,10 @@ public class PrincipalController {
 
     @GetMapping("devuelve-formulario")
     public String devuelveFormulario(Model modelo) {
-        modelo.addAttribute("usuario", "");
-        return "formulario";
+        modelo.addAttribute("titulo", "Formulario Original");
+        modelo.addAttribute("usuario", "Pepe");
+        modelo.addAttribute("iteraciones", 1);
+        return "formulario/formulario";
     }
 
     @GetMapping  ("recibe-parametros")
@@ -29,23 +31,46 @@ public class PrincipalController {
     public String recibeParametros
             (@RequestParam (required = false) String usuario,
              @RequestParam (required = false) String clave,
-             @RequestParam (required = false) String pi,
+             @RequestParam (defaultValue = "0") int iteraciones,
              @RequestParam (name="genero_seleccionado", required = false) String generoSeleccionado,
-             @RequestParam (name="aficiones_seleccionadas", required = false) ArrayList<String> aficiones,
-             @RequestParam (name="pais_seleccionado", required = false) String pais_seleccionado,
-             @RequestParam (name= "musica_seleccionada", required = false) ArrayList<String> musica_seleccionada,
+             @RequestParam (name="aficiones_seleccionadas", required = false) ArrayList<String> aficionesSeleccionadas,
+             @RequestParam (name="pais_seleccionado", required = false) String paisSeleccionado,
+             @RequestParam (name= "musica_seleccionada", required = false) ArrayList<String> musicasSeleccionadas,
              @RequestParam (required = false) String comentarios,
+             @RequestParam (defaultValue = "false") boolean licencia,
              @RequestParam (required = false) String archivo,
+             @RequestParam (required = false) Integer imagenX,
+             @RequestParam (required = false) Integer imagenY,
              Model modelo) {
+
+        int contadorParametros = 0;
+        if (usuario != null) contadorParametros++;
+        if (clave != null) contadorParametros++;
+        if (generoSeleccionado != null) contadorParametros++;
+        if (aficionesSeleccionadas != null) contadorParametros++;
+        if (paisSeleccionado != null) contadorParametros++;
+        if (musicasSeleccionadas != null) contadorParametros++;
+        if (comentarios != null) contadorParametros++;
+        if (archivo != null) contadorParametros++;
+        if (licencia) contadorParametros++;
+        if (imagenX != null && imagenY != null) contadorParametros++;
+
+        iteraciones ++;
+        modelo.addAttribute("titulo", "Formulario Repintado");
         modelo.addAttribute("usuario", usuario);
         modelo.addAttribute("clave", clave);
-        modelo.addAttribute("pi", pi);
+        modelo.addAttribute("iteraciones", iteraciones);
         modelo.addAttribute("genero_seleccionado", generoSeleccionado);
-        modelo.addAttribute("aficiones_seleccionadas", aficiones);
-        modelo.addAttribute("pais_seleccionado", pais_seleccionado);
-        modelo.addAttribute("musica_seleccionada", musica_seleccionada);
+        modelo.addAttribute("aficiones_seleccionadas", aficionesSeleccionadas);
+        modelo.addAttribute("pais_seleccionado", paisSeleccionado);
+        modelo.addAttribute("musica_seleccionada", musicasSeleccionadas);
         modelo.addAttribute("comentarios", comentarios);
+        modelo.addAttribute("licencia", licencia);
+        modelo.addAttribute("imagenX", imagenX != null ? imagenX : 0);
+        modelo.addAttribute("imagenY", imagenY != null ? imagenY : 0);
         modelo.addAttribute("archivo", archivo);
-        return "eco-parametros";
+        modelo.addAttribute("contadorParametros", contadorParametros);
+
+        return "formulario/formulario";
     }
 }

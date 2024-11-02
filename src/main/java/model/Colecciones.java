@@ -9,15 +9,16 @@ public class Colecciones {
     static {
         listaGeneros.put("M", "Masculino");
         listaGeneros.put("F", "Femenino");
-        listaGeneros.put("O", "Otros");
+        listaGeneros.put("O", "Otro");
     }
 
     private static Map<String, String> listaAficiones = new HashMap<>();
     static {
+        listaAficiones.put("D", "Deporte");
+        listaAficiones.put("L", "Lectura");
+        listaAficiones.put("P", "Pintura");
         listaAficiones.put("V", "Viajes");
-        listaAficiones.put("D", "Deportes");
-        listaAficiones.put("L", "Libros");
-        listaAficiones.put("S", "Series");
+
     }
 
     private static Map<String, String> listaPaises = new HashMap<>();
@@ -30,10 +31,11 @@ public class Colecciones {
 
     private static Map<String, String> listaMusica = new HashMap<>();
     static {
-        listaMusica.put("P", "Pop");
+        listaMusica.put("E", "Electrónica");
         listaMusica.put("F", "Funky");
+        listaMusica.put("N", "New Age");
+        listaMusica.put("P", "Pop");
         listaMusica.put("R", "Rock");
-        listaMusica.put("C", "Clásica");
     }
 
     public static Map<String, String> getListaGeneros() {
