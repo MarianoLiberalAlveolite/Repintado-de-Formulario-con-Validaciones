@@ -27,7 +27,7 @@ public class PrincipalController {
     }
 
     @GetMapping  ("recibe-parametros")
-    //@PostMapping()
+    //@GetMapping()
     public String recibeParametros
             (@RequestParam (required = false) String usuario,
              @RequestParam (required = false) String clave,
@@ -39,17 +39,17 @@ public class PrincipalController {
              @RequestParam (required = false) String comentarios,
              @RequestParam (defaultValue = "false") boolean licencia,
              @RequestParam (required = false) String archivo,
-             @RequestParam (name= "enviarFlecha.x", defaultValue = "0") int imagenX,
-             @RequestParam (name= "enviarFlecha.y", defaultValue = "0") int imagenY,
+             @RequestParam (name= "enviarFlecha.x", required = false, defaultValue = "0") int imagenX,
+             @RequestParam (name= "enviarFlecha.y", required = false, defaultValue = "0") int imagenY,
              Model modelo) {
 
         int contadorParametros = 0;
         if (usuario != null) contadorParametros++;
         if (clave != null) contadorParametros++;
         if (generoSeleccionado != null) contadorParametros++;
-        if (aficionesSeleccionadas != null) contadorParametros++;
+        if (aficionesSeleccionadas != null  && !aficionesSeleccionadas.isEmpty()) contadorParametros++;
         if (paisSeleccionado != null) contadorParametros++;
-        if (musicasSeleccionadas != null) contadorParametros++;
+        if (musicasSeleccionadas != null && !musicasSeleccionadas.isEmpty()) contadorParametros++;
         if (comentarios != null) contadorParametros++;
         if (archivo != null) contadorParametros++;
         if (licencia) contadorParametros++;
