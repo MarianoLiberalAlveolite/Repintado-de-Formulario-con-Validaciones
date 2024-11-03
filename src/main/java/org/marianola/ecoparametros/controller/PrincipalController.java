@@ -36,8 +36,7 @@ public class PrincipalController {
         return "formulario/formulario";
     }
 
-    @PostMapping  ("recibe-parametros")
-    //@GetMapping()
+    @GetMapping  ("recibe-parametros")
     public String recibeParametros
             (@RequestParam (required = false) String usuario,
              @RequestParam (required = false) String clave,
@@ -56,9 +55,9 @@ public class PrincipalController {
         int contadorParametros = 0;
         if (usuario != null) contadorParametros++;
         if (clave != null) contadorParametros++;
-        if (generoSeleccionado != null) contadorParametros++;
+        if (generoSeleccionado != null && !generoSeleccionado.isEmpty()) contadorParametros++;
         if (aficionesSeleccionadas != null  && !aficionesSeleccionadas.isEmpty()) contadorParametros++;
-        if (paisSeleccionado != null) contadorParametros++;
+        if (paisSeleccionado != null && !paisSeleccionado.isEmpty()) contadorParametros++;
         if (musicasSeleccionadas != null && !musicasSeleccionadas.isEmpty()) contadorParametros++;
         if (comentarios != null) contadorParametros++;
         if (archivo != null) contadorParametros++;
