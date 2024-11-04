@@ -6,11 +6,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/formulario")
 public class PrincipalController {
 
+    //Este metodo sirve para declarar los Maps y que sean globales en la clase Controller
     @ModelAttribute
     private void aniadeAttributesGlobalesAlModelo(Model modelo) {
         modelo.addAttribute("generos", Colecciones.getListaGeneros());
@@ -19,6 +21,7 @@ public class PrincipalController {
         modelo.addAttribute("musica", Colecciones.getListaMusica());
     }
 
+    //Este metodo devuelve el formulario vacío y es desde donde se inicia la aplicación
     @GetMapping ("devuelve-formulario")
     public String devuelveFormulario(Model modelo) {
         modelo.addAttribute("titulo", "Formulario Original");
@@ -37,6 +40,7 @@ public class PrincipalController {
         return "formulario/formulario";
     }
 
+    //Este metodo utiliza POST en lugar de GET y es el que repinta el formulario con los valores seleccionados
     @PostMapping  ("recibe-parametros")
     public String recibeParametros
             (@RequestParam (required = false) String usuario,
@@ -51,19 +55,8 @@ public class PrincipalController {
              @RequestParam (required = false) String archivo,
              @RequestParam (name= "enviarFlecha.x", required = false, defaultValue = "0") int imagenX,
              @RequestParam (name= "enviarFlecha.y", required = false, defaultValue = "0") int imagenY,
+             @RequestParam (required = false) Map<String,String> contadorParametros,
              Model modelo) {
-
-        int contadorParametros = 0;
-        if (usuario != null) contadorParametros++;
-        if (clave != null) contadorParametros++;
-        if (generoSeleccionado != null && !generoSeleccionado.isEmpty()) contadorParametros++;
-        if (aficionesSeleccionadas != null  && !aficionesSeleccionadas.isEmpty()) contadorParametros++;
-        if (paisSeleccionado != null && !paisSeleccionado.isEmpty()) contadorParametros++;
-        if (musicasSeleccionadas != null && !musicasSeleccionadas.isEmpty()) contadorParametros++;
-        if (comentarios != null) contadorParametros++;
-        if (archivo != null) contadorParametros++;
-        if (licencia) contadorParametros++;
-        if (imagenX != 0 || imagenY != 0) contadorParametros++;
 
         iteraciones ++;
         modelo.addAttribute("titulo", "Formulario Repintado");
@@ -79,7 +72,7 @@ public class PrincipalController {
         modelo.addAttribute("imagenX", imagenX);
         modelo.addAttribute("imagenY", imagenY);
         modelo.addAttribute("archivo", archivo);
-        modelo.addAttribute("contadorParametros", contadorParametros);
+        modelo.addAttribute("contadorParametros", contadorParametros.size());
 
         return "formulario/formulario";
     }
