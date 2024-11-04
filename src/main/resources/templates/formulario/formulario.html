@@ -31,11 +31,7 @@
                    th:each="aficion: ${aficiones}"
                    th:value="${aficion.key}"
                    th:text="${aficion.value}"
-                   th:checked="${aficiones_seleccionadas != null ?
-                        aficiones_seleccionadas.contains(aficion.key):
-                        aficion.key=='D' ||
-                        aficion.key=='P' ||
-                        aficion.key=='V'}">
+                   th:checked="${aficiones_seleccionadas != null && aficiones_seleccionadas.contains(aficion.key)}">
         </fieldset>
         <fieldset>
             <legend><label for="pais" th:text="#{eco-parametros.pais}"></label></legend>
@@ -53,8 +49,7 @@
                 <option th:each="music: ${musica}"
                         th:value="${music.key}"
                         th:text="${music.value}"
-                        th:selected="${musica_seleccionada != null ?
-                        musica_seleccionada.contains(music.key):music.key=='F' || music.key=='R'}">
+                        th:selected="${musica_seleccionada != null && musica_seleccionada.contains(music.key)}">
             </select>
         </fieldset>
         <fieldset>
