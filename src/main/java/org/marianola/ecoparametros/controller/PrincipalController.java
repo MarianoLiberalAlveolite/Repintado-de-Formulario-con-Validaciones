@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 
 @Controller
+@RequestMapping("formulario")
 public class PrincipalController {
 
     @ModelAttribute
@@ -18,7 +19,7 @@ public class PrincipalController {
         modelo.addAttribute("musica", Colecciones.getListaMusica());
     }
 
-    @GetMapping("devuelve-formulario")
+    @PostMapping ("devuelve-formulario")
     public String devuelveFormulario(Model modelo) {
         modelo.addAttribute("titulo", "Formulario Original");
         modelo.addAttribute("usuario", "Pepe");
