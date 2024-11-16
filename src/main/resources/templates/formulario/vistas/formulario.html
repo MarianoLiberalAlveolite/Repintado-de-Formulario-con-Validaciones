@@ -1,87 +1,208 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <!--línea en el head para que el favicon no este presente-->
+    <!--/* línea en el head para que el favicon no este presente */-->
     <link rel="icon" href="data:,">
-    <title th:text="${titulo}"></title>
+    <script src ="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}">
+    <title th:text="#{eco-parametros.titulo}"></title>
 </head>
+
 <body>
-    <h2 th:text="${titulo}"></h2>
-    <form method="post" action="recibe-parametros">
+    <!--/* SELECCIÓN DEL IDIOMA */-->
+
+    <!--/* CABECERA */-->
+
+    <h2 th:text="#{eco-parametros.titulo}"></h2>
+
+    <h3 class="correcto" th:text="${mensajeOK}"></h3>
+    <h3 class="error" th:text="${mensajeNOK}"></h3>
+
+    <!--/* Mostrar número de iteraciones */-->
+    <p th:text="'Iteración: ' + ${iteraciones}">Iteración: 1</p>
+
+    <form method="post" action="recibe-parametros"
+        th:object="${datosFormulario}">
+
+        <!--/* DATOS DE USUARIO */-->
+
+        <fieldset>
+            <legend th:text="#{eco-parametros.datosUsuario}"></legend>
+            <br>
+
+            <p class="error">&ast;</p><label for="usuario" th:text="#{eco-parametros.usuario}"></label>
+            <input type="text" th:field="*{usuario}" placeholder="Introduce tu nombre de Usuario">
+            <div th:each="error : ${#fields.errors('usuario')}"
+                 th:text="${error}" class="error"></div>
+
+            <p class="error">&ast;</p><label for="clave" th:text="#{eco-parametros.clave}"></label>
+            <input type="password" th:field="*{clave}"
+            placeholder="Introduce tu contraseña">
+            <div th:each="error : ${#fields.errors('clave')}"
+                 th:text="${error}" class="error"></div>
+
+            <p class="error">&ast;</p><label for="confirmacionClave" th:text="#{eco-parametros.confirmacionClave}"></label>
+            <input type="password" th:field="*{confirmacionClave}"
+            placeholder="Confirma tu contraseña">
+            <div th:each="error : ${#fields.errors('clave')}"
+                 th:text="${error}" class="error"></div>
+
+            <input type="button" id="mostrarClaves" th:value="#{eco-parametros.mostrarClaves}">
+
+            <input type="button" th:value="#{eco-parametros.vaciarCampos}">
+            <br>
+        </fieldset>
+        <br>
+
+        <!--/* DATOS PERSONALES */-->
+
         <fieldset>
             <legend th:text="#{eco-parametros.datosId}"></legend>
-            <label for="usuario" th:text="#{eco-parametros.usuario}"></label>
-            <input type="text" id="usuario" name="usuario" th:value="${usuario}">
-            <label for="clave" th:text="#{eco-parametros.clave}"></label>
-            <input type="password" id="clave" name="clave" th:value="${clave}">
-        </fieldset>
-        <input type="hidden" id="iteraciones" name="iteraciones" th:value="${iteraciones}">
-        <fieldset>
-            <legend><label for="genero" id="genero" th:text="#{eco-parametros.genero}"></label></legend>
-            <input type="radio" name="genero_seleccionado"
+            <br>
+
+            <p class="error">&ast;</p><label for="generoSeleccionado" id="generoSeleccionado" th:text="#{eco-parametros.genero}"></label>
+            <input type="radio" name="generoSeleccionado"
                    th:each="genero: ${generos}"
                    th:value="${genero.key}"
                    th:text="${genero.value}"
                    th:checked="${genero.key.equals(genero_seleccionado)}">
-        </fieldset>
-        <fieldset>
-            <legend><label for="aficiones" id="aficiones" th:text="#{eco-parametros.aficiones}"></label></legend>
-            <input type="checkbox" name="aficiones_seleccionadas"
-                   th:each="aficion: ${aficiones}"
-                   th:value="${aficion.key}"
-                   th:text="${aficion.value}"
-                   th:checked="${aficiones_seleccionadas != null && aficiones_seleccionadas.contains(aficion.key)}">
-        </fieldset>
-        <fieldset>
-            <legend><label for="pais" th:text="#{eco-parametros.pais}"></label></legend>
-            <select name="pais_seleccionado" id="pais">
+
+            <input type="button" id="deseleccionarGeneros" th:value="#{eco-parametros.deseleccionarRadios}"
+                   onclick="deseleccionaRadio();">
+
+            <p class="error">&ast;</p><label for="pais" th:text="#{eco-parametros.pais}"></label>
+            <select name="paisSeleccionado" id="pais">
                 <option th:each="pais: ${paises}"
                         th:value="${pais.key}"
                         th:text="${pais.value}"
                         th:selected="${pais.key==pais_seleccionado} ? 'selected'">
                 </option>
             </select>
+
+            <br>
+
+            <p class="error">&ast;</p><label for="fechaNacimiento" th:text="#{eco-parametros.fechaNace}"></label>
+            <input type="text" th:field="*{fechaNacimiento}">
+            <div th:each="error : ${#fields.errors('fechaNacimiento')}"
+                 th:text="${error}" class="error"></div>
+
+            <p class="indicador">&#9658;</p><label for="edad" th:text="#{eco-parametros.edad}"></label>
+            <input type="text" th:field="*{edad}">
+            <div th:each="error : ${#fields.errors('edad')}"
+                 th:text="${error}" class="error"></div>
+
+            <p class="error">&ast;</p><label for="peso" th:text="#{eco-parametros.peso}"></label>
+            <input type="text" th:field="*{peso}">
+            <div th:each="error : ${#fields.errors('peso')}"
+                 th:text="${error}" class="error"></div>
+
+            <input type="button" th:value="#{eco-parametros.vaciarCampos}">
+            <br>
         </fieldset>
+        <br>
+
+        <!--/* DATOS DE CONTACTO */-->
+
         <fieldset>
-            <legend><label for="musica" th:text="#{eco-parametros.musica}"></label></legend>
+            <legend th:text="#{eco-parametros.datosContact}"></legend>
+            <br>
+
+            <p class="indicador">&#9658;</p><label for="prefijo" th:text="#{eco-parametros.prefijo}"></label>
+            <input type="text" th:field="*{prefijo}">
+            <div th:each="error : ${#fields.errors('prefijo')}"
+                 th:text="${error}" class="error"></div>
+
+            <p class="indicador">&#9658;</p><label for="telefono" th:text="#{eco-parametros.telefono}"></label>
+            <input type="text" th:field="*{telefono}">
+            <div th:each="error : ${#fields.errors('telefono')}"
+                 th:text="${error}" class="error"></div>
+
+            <p class="indicador">&#9658;</p><label for="email" th:text="#{eco-parametros.email}"></label>
+            <input type="text" th:field="*{email}">
+            <div th:each="error : ${#fields.errors('email')}"
+                 th:text="${error}" class="error"></div>
+
+            <label for="direccionIp" th:text="#{eco-parametros.direccion_ip}"></label>
+            <input type="text" th:field="*{direccionIp}">
+            <div th:each="error : ${#fields.errors('direccionIp')}"
+                 th:text="${error}" class="error"></div>
+
+            <input type="button" th:value="#{eco-parametros.vaciarCampos}">
+            <br>
+        </fieldset>
+        <br>
+
+        <!--/* DATOS DE INTERÉS */-->
+
+        <fieldset>
+            <legend th:text="#{eco-parametros.datosInteres}"></legend>
+            <br>
+
+            <label for="aficiones" id="aficiones" th:text="#{eco-parametros.aficiones}"></label>
+            <input type="checkbox" name="aficiones_seleccionadas"
+                   th:each="aficion: ${aficiones}"
+                   th:value="${aficion.key}"
+                   th:text="${aficion.value}"
+                   th:checked="${aficiones_seleccionadas != null && aficiones_seleccionadas.contains(aficion.key)}">
+            <input type="button" id="deseleccionarCheckboxes" th:value="#{eco-parametros.deseleccionarCheckboxes}">
+            <input type="button" id="seleccionarCheckboxes" th:value="#{eco-parametros.seleccionarCheckboxes}">
+
+            <label for="musica" th:text="#{eco-parametros.musica}"></label>
             <select name="musica_seleccionada" id="musica" multiple size="4">
                 <option th:each="music: ${musica}"
                         th:value="${music.key}"
                         th:text="${music.value}"
                         th:selected="${musica_seleccionada != null && musica_seleccionada.contains(music.key)}">
             </select>
+            <input type="button" id="deseleccionarSelectM" th:value="#{eco-parametros.deseleccionarSelectM}">
+            <input type="button" id="seleccionarSelectM" th:value="#{eco-parametros.seleccionarSelectM}">
+
+            <input type="button" th:value="#{eco-parametros.vaciarCampos}">
+            <br>
         </fieldset>
+        <br>
+
+        <!--/* OTROS */-->
+
         <fieldset>
-            <legend><label for="comentarios" th:text="#{eco-parametros.comentarios}"></label></legend>
-            <textarea id="comentarios" name="comentarios" rows="4" cols="20">
-                <th:block th:text="${comentarios}"/>
-            </textarea>
-        </fieldset>
-        <fieldset>
-            <legend><label for="archivo" th:text="#{eco-parametros.archivo}"></label></legend>
-            <input type="file" id="archivo" name="archivo">
+            <legend th:text="#{eco-parametros.datosInteres}"></legend>
+            <br>
+
+            <label for="archivo" th:text="#{eco-parametros.archivo}"></label>
+            <input type="file" id="archivo" name="archivo" th:value="#{eco-parametros.examinar}">
             <p th:text="${archivo != null ? 'Archivo seleccionado: ' + archivo : ''}"></p>
-        </fieldset>
-        <fieldset>
-            <legend><label for="licencia" th:text="#{eco-parametros.licencia}"></label></legend>
+
+            <label for="comentarios" th:text="#{eco-parametros.comentarios}"></label>
+            <textarea id="comentarios" name="comentarios" rows="4" cols="20">
+                    <th:block th:text="${comentarios}"/></textarea>
+
+            <label for="licencia" th:text="#{eco-parametros.licencia}"></label>
             <input type="checkbox" id="licencia" name="licencia"
                    th:checked="${licencia}">
+
+            <input type="button" th:value="#{eco-parametros.vaciarCampos}">
+            <br>
         </fieldset>
+        <br>
+
+        <!--/* OPCIONES DE ENVÍO */-->
+
         <fieldset>
-            <input type="submit" th:value="#{eco-parametros.enviar}">
-            <input type="reset" th:value="#{eco-parametros.resetear}">
             <input type="image" th:src="@{/img/enviarFlecha.png}"
                    name="enviarFlecha" alt="Enviar" width="35px" height="35px">
-        </fieldset>
-        <fieldset>
-            <!-- Mostrar coordenadas x e y del clic en el formulario repintado -->
-            <p th:text="'imagen.x: ' + ${imagenX} + ' e imagen.y: ' + ${imagenY}"></p>
-            <!-- Mostrar número de iteraciones -->
-            <p th:text="'Iteración: ' + ${iteraciones}">Iteración: 1</p>
-            <!-- Mostrar contador de parámetros -->
-            <p th:text="'Se han recibido ' + ${contadorParametros} + ' parámetros desde el formulario original.'"></p>
+            <input type="button" th:value="#{eco-parametros.vaciarCamposTodos}">
+            <input type="reset" th:value="#{eco-parametros.resetear}">
+            <input type="submit" th:value="#{eco-parametros.enviar}">
         </fieldset>
     </form>
+    <script>
+        $(document).ready(function(){
+                $('#deseleccionarGeneros').on('click',function () {
+                    // clear all radio buttons
+                    $("input[type=radio][name=generoSeleccionado]").prop('checked', false);
+                })
+            });
+    </script>
 </body>
 </html>

@@ -15,6 +15,7 @@ import java.util.Map;
 @RequestMapping("/formulario")
 public class PrincipalController {
 
+
     //Este metodo sirve para declarar los Maps y que sean globales en la clase Controller
     @ModelAttribute
     private void aniadeAttributesGlobalesAlModelo(Model modelo) {
@@ -25,11 +26,46 @@ public class PrincipalController {
     }
 
     //Prueba de sintaxis para ver como funciona fragmentos
+    /*
     @GetMapping("devuelvePruebaformulario")
     public String devuelvePruebaFormulario(Model modelo) {
-        modelo.addAttribute("vista","formulario.html");
+        modelo.addAttribute("vista","formulario_practica1.html");
         return "principal";
+    }*/
+
+    @GetMapping ("devuelve-formulario")
+    public String devuelveFormularioValidado(
+        @ModelAttribute DatosFormulario datosFormulario) {
+
+        return "formulario/vistas/formulario";
     }
+
+    @PostMapping  ("recibe-parametros") //De la clase DatosFormulario creo un objeto que se llama datosFormulario
+    public String recibeParametrosYrepinta(
+            Model modelo,
+            //@RequestParam String comentarios,
+            @Valid @ModelAttribute DatosFormulario datosFormulario,
+            @RequestParam (required = false) Map<String,String> contadorParametros,
+            @RequestParam (defaultValue = "0") int iteraciones,
+            BindingResult resultadoValidacion
+            ) {
+        iteraciones ++;
+        modelo.addAttribute("iteraciones", iteraciones);
+        if (resultadoValidacion.hasErrors()){
+            modelo.addAttribute("mensajeNOK",
+                    "ALERTA: Formulario con errores.");
+            return "formulario/vistas/formulario";
+        }
+        //System.err.println(datosFormulario.toString());
+        modelo.addAttribute("mensajeOK",
+                "ALELUYA: Formulario sin errores.");
+        modelo.addAttribute("contadorParametros", contadorParametros.size());
+        return "formulario/vistas/formulario";
+    }
+
+    /* *************** IGNORAR *********************
+       ******* MÉTODOS DE LA PRÁCTICA ANTERIOR ********************
+
 
     //Este metodo devuelve el formulario vacío y es desde donde se inicia la aplicación
     @GetMapping ("devuelve-formulario")
@@ -85,30 +121,5 @@ public class PrincipalController {
         modelo.addAttribute("contadorParametros", contadorParametros.size());
 
         return "formulario/formulario";
-    }
-
-    @GetMapping ("dev-form-validado")
-    public String devuelveFormularioValidado(
-        @ModelAttribute DatosFormulario datosFormulario) {
-
-        return "formulario/formulario_validado";
-    }
-
-    @PostMapping  ("rec-param-validado") //De la clase DatosFormulario creo un objeto que se llama datosFormulario
-    public String recibeParametrosValidado(
-            Model modelo,
-            //@RequestParam String comentarios,
-             @Valid @ModelAttribute DatosFormulario datosFormulario,
-            BindingResult resultadoValidacion
-            ) {
-        if (resultadoValidacion.hasErrors()){
-            modelo.addAttribute("mensajeNOK",
-                    "El formulario tiene errores");
-            return "formulario/formulario_validado";
-        }
-        //System.err.println(datosFormulario.toString());
-        modelo.addAttribute("mensajeOK",
-                "El formulario ya tiene errores");
-        return "formulario/formulario_validado";
-    }
+    }*/
 }

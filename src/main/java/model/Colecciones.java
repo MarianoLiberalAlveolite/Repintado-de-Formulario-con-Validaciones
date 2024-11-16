@@ -21,12 +21,13 @@ public class Colecciones {
 
     }
 
-    private static Map<String, String> listaPaises = new HashMap<>();
+    private static Map<String, Pais> listaPaises = new HashMap<>();
     static {
-        listaPaises.put("A", "Andorra");
-        listaPaises.put("F", "Francia");
-        listaPaises.put("E", "España");
-        listaPaises.put("P", "Portugal");
+        listaPaises.put("es", new Pais("España","Castellano","34",true,"espania.jpg"));
+        listaPaises.put("fr", new Pais ("Francia","Francés","33",false, "francia.jpg"));
+        listaPaises.put("it", new Pais("Italia","Italiano","39",false, "italia.jpg"));
+        listaPaises.put("pt", new Pais("Portugal","Portugués","39",false, "portugues.jpg"));
+        listaPaises.put("en", new Pais("Reino Unido","Inglés", "44", true, "reino_unido.jpg"));
     }
 
     private static Map<String, String> listaMusica = new HashMap<>();
@@ -44,7 +45,7 @@ public class Colecciones {
     public static Map<String, String> getListaAficiones() {
         return listaAficiones;
     }
-    public static Map<String, String> getListaPaises() {
+    public static Map<String, Pais> getListaPaises() {
         return listaPaises;
     }
     public static Map<String, String> getListaMusica() {

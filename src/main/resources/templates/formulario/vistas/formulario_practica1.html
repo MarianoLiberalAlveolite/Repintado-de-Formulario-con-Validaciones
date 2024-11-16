@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!--línea en el head para que el favicon no este presente-->
+    <link rel="icon" href="data:,">
+    <title th:text="#{eco-parametros.titulo}"></title>
+</head>
+<body>
+    <h2 th:text="#{eco-parametros.titulo}"></h2>
+    <form method="post" action="recibe-parametros">
+        <fieldset>
+            <legend th:text="#{eco-parametros.datosId}"></legend>
+            <label for="usuario" th:text="#{eco-parametros.usuario}"></label>
+            <input type="text" id="usuario" name="usuario" th:value="${usuario}">
+            <label for="clave" th:text="#{eco-parametros.clave}"></label>
+            <input type="password" id="clave" name="clave" th:value="${clave}">
+        </fieldset>
+        <input type="hidden" id="iteraciones" name="iteraciones" th:value="${iteraciones}">
+        <fieldset>
+            <legend><label for="genero" id="genero" th:text="#{eco-parametros.genero}"></label></legend>
+            <input type="radio" name="genero_seleccionado"
+                   th:each="genero: ${generos}"
+                   th:value="${genero.key}"
+                   th:text="${genero.value}"
+                   th:checked="${genero.key.equals(genero_seleccionado)}">
+        </fieldset>
+        <fieldset>
+            <legend><label for="aficiones" id="aficiones" th:text="#{eco-parametros.aficiones}"></label></legend>
+            <input type="checkbox" name="aficiones_seleccionadas"
+                   th:each="aficion: ${aficiones}"
+                   th:value="${aficion.key}"
+                   th:text="${aficion.value}"
+                   th:checked="${aficiones_seleccionadas != null && aficiones_seleccionadas.contains(aficion.key)}">
+        </fieldset>
+        <fieldset>
+            <legend><label for="pais" th:text="#{eco-parametros.pais}"></label></legend>
+            <select name="pais_seleccionado" id="pais">
+                <option th:each="pais: ${paises}"
+                        th:value="${pais.key}"
+                        th:text="${pais.value}"
+                        th:selected="${pais.key==pais_seleccionado} ? 'selected'">
+                </option>
+            </select>
+        </fieldset>
+        <fieldset>
+            <legend><label for="musica" th:text="#{eco-parametros.musica}"></label></legend>
+            <select name="musica_seleccionada" id="musica" multiple size="4">
+                <option th:each="music: ${musica}"
+                        th:value="${music.key}"
+                        th:text="${music.value}"
+                        th:selected="${musica_seleccionada != null && musica_seleccionada.contains(music.key)}">
+            </select>
+        </fieldset>
+        <fieldset>
+            <legend><label for="comentarios" th:text="#{eco-parametros.comentarios}"></label></legend>
+            <textarea id="comentarios" name="comentarios" rows="4" cols="20">
+                <th:block th:text="${comentarios}"/>
+            </textarea>
+        </fieldset>
+        <fieldset>
+            <legend><label for="archivo" th:text="#{eco-parametros.archivo}"></label></legend>
+            <input type="file" id="archivo" name="archivo">
+            <p th:text="${archivo != null ? 'Archivo seleccionado: ' + archivo : ''}"></p>
+        </fieldset>
+        <fieldset>
+            <legend><label for="licencia" th:text="#{eco-parametros.licencia}"></label></legend>
+            <input type="checkbox" id="licencia" name="licencia"
+                   th:checked="${licencia}">
+        </fieldset>
+        <fieldset>
+            <input type="submit" th:value="#{eco-parametros.enviar}">
+            <input type="reset" th:value="#{eco-parametros.resetear}">
+            <input type="image" th:src="@{/img/enviarFlecha.png}"
+                   name="enviarFlecha" alt="Enviar" width="35px" height="35px">
+        </fieldset>
+        <fieldset>
+            <!-- Mostrar coordenadas x e y del clic en el formulario repintado -->
+            <p th:text="'imagen.x: ' + ${imagenX} + ' e imagen.y: ' + ${imagenY}"></p>
+            <!-- Mostrar número de iteraciones -->
+            <p th:text="'Iteración: ' + ${iteraciones}">Iteración: 1</p>
+            <!-- Mostrar contador de parámetros -->
+            <p th:text="'Se han recibido ' + ${contadorParametros} + ' parámetros desde el formulario original.'"></p>
+        </fieldset>
+    </form>
+</body>
+</html>
