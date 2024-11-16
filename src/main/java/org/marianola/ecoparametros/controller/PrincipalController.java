@@ -1,8 +1,11 @@
 package org.marianola.ecoparametros.controller;
 
+import jakarta.validation.Valid;
 import model.Colecciones;
+import model.DatosFormulario;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -19,6 +22,13 @@ public class PrincipalController {
         modelo.addAttribute("aficiones", Colecciones.getListaAficiones());
         modelo.addAttribute("paises", Colecciones.getListaPaises());
         modelo.addAttribute("musica", Colecciones.getListaMusica());
+    }
+
+    //Prueba de sintaxis para ver como funciona fragmentos
+    @GetMapping("devuelvePruebaformulario")
+    public String devuelvePruebaFormulario(Model modelo) {
+        modelo.addAttribute("vista","formulario.html");
+        return "principal";
     }
 
     //Este metodo devuelve el formulario vacío y es desde donde se inicia la aplicación
@@ -75,5 +85,30 @@ public class PrincipalController {
         modelo.addAttribute("contadorParametros", contadorParametros.size());
 
         return "formulario/formulario";
+    }
+
+    @GetMapping ("dev-form-validado")
+    public String devuelveFormularioValidado(
+        @ModelAttribute DatosFormulario datosFormulario) {
+
+        return "formulario/formulario_validado";
+    }
+
+    @PostMapping  ("rec-param-validado") //De la clase DatosFormulario creo un objeto que se llama datosFormulario
+    public String recibeParametrosValidado(
+            Model modelo,
+            //@RequestParam String comentarios,
+             @Valid @ModelAttribute DatosFormulario datosFormulario,
+            BindingResult resultadoValidacion
+            ) {
+        if (resultadoValidacion.hasErrors()){
+            modelo.addAttribute("mensajeNOK",
+                    "El formulario tiene errores");
+            return "formulario/formulario_validado";
+        }
+        //System.err.println(datosFormulario.toString());
+        modelo.addAttribute("mensajeOK",
+                "El formulario ya tiene errores");
+        return "formulario/formulario_validado";
     }
 }
