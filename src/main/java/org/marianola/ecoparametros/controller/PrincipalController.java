@@ -25,6 +25,52 @@ public class PrincipalController {
         modelo.addAttribute("musica", Colecciones.getListaMusica());
     }
 
+
+    @GetMapping ("devuelve-formulario")
+    public String devuelveFormularioValidado(
+            Model modelo,
+        @ModelAttribute DatosFormulario datosFormulario) {
+        modelo.addAttribute("usuario", "Lola");
+        modelo.addAttribute("pais_seleccionado", "pt"); // Portugal
+        modelo.addAttribute("aficiones_seleccionadas", new ArrayList<String>() {{
+            add("D"); // Deporte
+            add("P"); // Pintura
+            add("V"); // Viajes
+        }});
+        modelo.addAttribute("musica_seleccionada", new ArrayList<String>() {{
+            add("F"); // Funky
+            add("R"); // Rock
+        }});
+        return "formulario/vistas/formulario";
+    }
+
+    /* CONVERTIR A POST */
+    //@PostMapping
+    @GetMapping("recibe-parametros") //De la clase DatosFormulario creo un objeto que se llama datosFormulario
+    public String recibeParametrosYrepinta(
+            @Valid
+            @ModelAttribute DatosFormulario datosFormulario,
+            BindingResult resultadoValidacion,
+            Model modelo,
+            @RequestParam (required = false) Map<String,String> contadorParametros,
+            @RequestParam (defaultValue = "0") int iteraciones,
+            @RequestParam (name= "enviarFlecha.x", required = false, defaultValue = "0") int imagenX,
+            @RequestParam (name= "enviarFlecha.y", required = false, defaultValue = "0") int imagenY
+            ) {
+            iteraciones ++;
+            modelo.addAttribute("iteraciones", iteraciones);
+            modelo.addAttribute("contadorParametros", contadorParametros.size());
+            modelo.addAttribute("imagenX", imagenX);
+            modelo.addAttribute("imagenY", imagenY);
+            if (resultadoValidacion.hasErrors()){
+                modelo.addAttribute("mensajeNOK","ALERTA: Formulario con errores.");
+                return "formulario/vistas/formulario";
+            }
+            //System.err.println(datosFormulario.toString());
+            modelo.addAttribute("mensajeOK","ALELUYA: Formulario sin errores.");
+
+        return "formulario/vistas/formulario";
+    }
     //Prueba de sintaxis para ver como funciona fragmentos
     /*
     @GetMapping("devuelvePruebaformulario")
@@ -32,36 +78,6 @@ public class PrincipalController {
         modelo.addAttribute("vista","formulario_practica1.html");
         return "principal";
     }*/
-
-    @GetMapping ("devuelve-formulario")
-    public String devuelveFormularioValidado(
-        @ModelAttribute DatosFormulario datosFormulario) {
-
-        return "formulario/vistas/formulario";
-    }
-
-    @PostMapping  ("recibe-parametros") //De la clase DatosFormulario creo un objeto que se llama datosFormulario
-    public String recibeParametrosYrepinta(
-            Model modelo,
-            //@RequestParam String comentarios,
-            @Valid @ModelAttribute DatosFormulario datosFormulario,
-            @RequestParam (required = false) Map<String,String> contadorParametros,
-            @RequestParam (defaultValue = "0") int iteraciones,
-            BindingResult resultadoValidacion
-            ) {
-        iteraciones ++;
-        modelo.addAttribute("iteraciones", iteraciones);
-        if (resultadoValidacion.hasErrors()){
-            modelo.addAttribute("mensajeNOK",
-                    "ALERTA: Formulario con errores.");
-            return "formulario/vistas/formulario";
-        }
-        //System.err.println(datosFormulario.toString());
-        modelo.addAttribute("mensajeOK",
-                "ALELUYA: Formulario sin errores.");
-        modelo.addAttribute("contadorParametros", contadorParametros.size());
-        return "formulario/vistas/formulario";
-    }
 
     /* *************** IGNORAR *********************
        ******* MÉTODOS DE LA PRÁCTICA ANTERIOR ********************
