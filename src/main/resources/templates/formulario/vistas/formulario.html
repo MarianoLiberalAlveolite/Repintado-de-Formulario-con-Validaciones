@@ -11,6 +11,12 @@
 
 <body>
     <!--/* SELECCIÓN DEL IDIOMA */-->
+    <span th:text="#{eco-parametros.idioma}"></span>:
+    <select id="idioma">
+        <option value=""></option>
+        <option th:each="pais: ${paises}"
+                th:value="${pais.value.getIdioma()}"></option>
+    </select>
 
     <!--/* CABECERA */-->
 
@@ -74,7 +80,7 @@
             <select name="paisSeleccionado" id="paisSeleccionado" tabindex="5" th:field="*{paisSeleccionado}">
                 <option th:each="pais: ${paises}"
                         th:value="${pais.key}"
-                        th:text="${pais.value}"
+                        th:text="${pais.value.getIdioma()}"
                         th:selected="${pais.key==pais_seleccionado} ? 'selected'">
                 </option>
             </select>

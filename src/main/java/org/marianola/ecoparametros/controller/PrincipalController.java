@@ -1,8 +1,8 @@
 package org.marianola.ecoparametros.controller;
 
 import jakarta.validation.Valid;
-import model.Colecciones;
-import model.DatosFormulario;
+import org.marianola.ecoparametros.model.Colecciones;
+import org.marianola.ecoparametros.model.DatosFormulario;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
