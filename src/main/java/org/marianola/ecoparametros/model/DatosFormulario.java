@@ -3,6 +3,7 @@ package org.marianola.ecoparametros.model;
 import org.marianola.ecoparametros.Validations.DireccionIp;
 import jakarta.validation.constraints.*;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -38,7 +39,7 @@ public class DatosFormulario {
     @NotNull
     private String paisSeleccionado;
 
-    /*@DateTimeFormat(pattern = "dd/MM/yyyy")*/
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
     @Past(message ="{Past.datosFormulario.fechaNacimiento}")
     private LocalDate fechaNacimiento;
 

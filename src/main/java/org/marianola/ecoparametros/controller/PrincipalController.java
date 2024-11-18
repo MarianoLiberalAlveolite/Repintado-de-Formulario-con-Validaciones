@@ -25,6 +25,10 @@ public class PrincipalController {
         modelo.addAttribute("musica", Colecciones.getListaMusica());
     }
 
+    @GetMapping("/formulario/lang")
+    public String cambiarLenguaje(@RequestParam ("lang") String lang){
+        return "formulario/vistas/formulario";
+    }
 
     @GetMapping ("devuelve-formulario")
     public String devuelveFormularioValidado(
@@ -51,11 +55,11 @@ public class PrincipalController {
             @Valid
             @ModelAttribute DatosFormulario datosFormulario,
             BindingResult resultadoValidacion,
-            Model modelo,
             @RequestParam (required = false) Map<String,String> contadorParametros,
             @RequestParam (defaultValue = "0") int iteraciones,
             @RequestParam (name= "enviarFlecha.x", required = false, defaultValue = "0") int imagenX,
-            @RequestParam (name= "enviarFlecha.y", required = false, defaultValue = "0") int imagenY
+            @RequestParam (name= "enviarFlecha.y", required = false, defaultValue = "0") int imagenY,
+            Model modelo
             ) {
             iteraciones ++;
             modelo.addAttribute("iteraciones", iteraciones);
@@ -66,7 +70,6 @@ public class PrincipalController {
                 modelo.addAttribute("mensajeNOK","ALERTA: Formulario con errores.");
                 return "formulario/vistas/formulario";
             }
-            //System.err.println(datosFormulario.toString());
             modelo.addAttribute("mensajeOK","ALELUYA: Formulario sin errores.");
 
         return "formulario/vistas/formulario";

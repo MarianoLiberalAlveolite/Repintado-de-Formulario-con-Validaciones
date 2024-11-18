@@ -4,7 +4,8 @@
     <meta charset="utf-8">
     <!--/* línea en el head para que el favicon no este presente */-->
     <link rel="icon" href="data:,">
-    <script src ="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script th:src="@{/js/funciones.js}"></script>
     <link rel="stylesheet" th:href="@{/css/estilo.css}">
     <title th:text="#{eco-parametros.titulo}"></title>
 </head>
@@ -14,8 +15,7 @@
     <span th:text="#{eco-parametros.idioma}"></span>:
     <select id="idioma">
         <option value=""></option>
-        <option th:each="pais: ${paises}"
-                th:value="${pais.value.getIdioma()}"></option>
+        <option th:each="pais: ${paises}" th:value="${pais.key}" th:text="${pais.value.getNombre()}"></option>
     </select>
 
     <!--/* CABECERA */-->
@@ -54,10 +54,10 @@
             <div th:each="error : ${#fields.errors('clave')}"
                  th:text="${error}" class="error"></div>
 
-            <input type="button" id="mostrarClaves" th:value="#{eco-parametros.mostrarClaves}">
+            <button type="button" id="botonMostrarClaves" th:text="#{eco-parametros.mostrarClaves}" onclick="mostrarClave()"></button>
 
             <br>
-            <input type="button" th:value="#{eco-parametros.vaciarCampos}">
+            <input type="button" id="" th:value="#{eco-parametros.vaciarCampos}" onclick="">
         </fieldset>
         <br>
 
@@ -74,13 +74,15 @@
                        th:checked="${genero.key.equals(genero_seleccionado)}">
                 <span th:text="${genero.value}"></span>
             </div>
-            <input type="button" id="deseleccionarGeneros" th:value="#{eco-parametros.deseleccionarRadios}" onclick="deseleccionaRadio();">
+            <input type="button" id="deseleccionarGeneros" th:value="#{eco-parametros.deseleccionarRadios}" onclick="deseleccionarRadYCheck('generoSeleccionado');">
+            <input type="button" id="seleccionarGeneros" th:value="#{eco-parametros.seleccionarRadios}" onclick="seleccionarRadYCheck('generoSeleccionado')">
+            <br>
 
             <span class="error">&ast;</span><label for="paisSeleccionado" th:text="#{eco-parametros.pais}"></label>
             <select name="paisSeleccionado" id="paisSeleccionado" tabindex="5" th:field="*{paisSeleccionado}">
                 <option th:each="pais: ${paises}"
                         th:value="${pais.key}"
-                        th:text="${pais.value.getIdioma()}"
+                        th:text="${pais.value.getNombre()}"
                         th:selected="${pais.key==pais_seleccionado} ? 'selected'">
                 </option>
             </select>
@@ -115,12 +117,13 @@
 
             <span class="indicador">&#9658;</span><label for="prefijoSeleccionado" th:text="#{eco-parametros.prefijo}"></label>
             <select name="prefijoSeleccionado" tabindex="9" id="prefijoSeleccionado" th:field="*{prefijoSeleccionado}">
-                <option th:each="prefijo: ${prefijos}"
-                        th:value="${prefijo.key}"
-                        th:text="${prefijo.value}"
-                        th:selected="${prefijo.key==prefijoSeleccionado} ? 'selected'">
+                <option th:each="entry: ${listaPaises}"
+                        th:value="${entry.value.pais}"
+                        th:text="'+' + ${entry.value.prefijoTelefonicoPais}"
                 </option>
             </select>
+            <div th:each="error : ${#fields.errors('prefijoSeleccionado')}" th:text="${error}" class="error"></div>
+
 
             <span class="indicador">&#9658;</span><label for="telefono" th:text="#{eco-parametros.telefono}"></label>
             <input type="text" tabindex="10" id="telefono" th:field="*{telefono}" th:placeholder="#{eco-parametros.placeholderTelefono}">
@@ -157,8 +160,9 @@
                 <span th:text="${aficion.value}"></span>
             </div>
             <br>
-            <input type="button" id="deseleccionarCheckboxes" th:value="#{eco-parametros.deseleccionarCheckboxes}">
-            <input type="button" id="seleccionarCheckboxes" th:value="#{eco-parametros.seleccionarCheckboxes}">
+            <input type="button" id="deseleccionarCheckboxes" th:value="#{eco-parametros.deseleccionarCheckboxes}" onclick="deseleccionarRadYCheck('aficionesSeleccionadas');">
+
+            <input type="button" id="seleccionarCheckboxes" th:value="#{eco-parametros.seleccionarCheckboxes}" onclick="seleccionarRadYCheck('aficionesSeleccionadas');">
             <br>
             <label for="musicasSeleccionadas" th:text="#{eco-parametros.musica}"></label>
             <br>
@@ -169,8 +173,8 @@
                         th:selected="${musica_seleccionada != null && musica_seleccionada.contains(music.key)}">
             </select>
             <br>
-            <input type="button" id="deseleccionarSelectM" th:value="#{eco-parametros.deseleccionarSelectM}">
-            <input type="button" id="seleccionarSelectM" th:value="#{eco-parametros.seleccionarSelectM}">
+            <input type="button" id="deseleccionarSelectM" th:value="#{eco-parametros.deseleccionarSelectM}" onclick="deseleccionarSelect('musicasSeleccionadas');">
+            <input type="button" id="seleccionarSelectM" th:value="#{eco-parametros.seleccionarSelectM}" onclick="seleccionarSelect('musicasSeleccionadas')">
 
             <br>
             <input type="button" th:value="#{eco-parametros.vaciarCampos}">
@@ -219,13 +223,5 @@
         <!-- /* FALTA IMPRIMIR PARÁMETRO por PARÁMETRO:
                 <nombre_parametro_1>, <nombre_parametro_2>, …,<nombre_parametro_N> */ -->
     </form>
-    <script>
-        $(document).ready(function(){
-                $('#deseleccionarGeneros').on('click',function () {
-                    // clear all radio buttons
-                    $("input[type=radio][name=generoSeleccionado]").prop('checked', false);
-                })
-            });
-    </script>
 </body>
 </html>
