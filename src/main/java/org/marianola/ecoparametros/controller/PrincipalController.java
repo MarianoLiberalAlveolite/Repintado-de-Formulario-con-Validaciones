@@ -48,9 +48,8 @@ public class PrincipalController {
         return "formulario/vistas/formulario";
     }
 
-    /* CONVERTIR A POST */
-    //@PostMapping
-    @GetMapping("recibe-parametros") //De la clase DatosFormulario creo un objeto que se llama datosFormulario
+
+    @PostMapping("recibe-parametros")
     public String recibeParametrosYrepinta(
             @Valid
             @ModelAttribute DatosFormulario datosFormulario,

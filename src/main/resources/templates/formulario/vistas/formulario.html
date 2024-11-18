@@ -28,7 +28,7 @@
     <!--/* Mostrar número de iteraciones */-->
     <p th:text="'Iteración: ' + ${iteraciones}"></p>
 
-    <form method="get" action="recibe-parametros"
+    <form method="post" action="recibe-parametros"
         th:object="${datosFormulario}">
 
         <!--/* DATOS DE USUARIO */-->
