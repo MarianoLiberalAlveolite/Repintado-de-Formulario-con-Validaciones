@@ -82,7 +82,10 @@ public class PrincipalController {
         modelo.addAttribute("paises", Colecciones.getListaPaises());
         modelo.addAttribute("musica", Colecciones.getListaMusica());
 
+        //Iniciamos las iteraciones a '1'
         modelo.addAttribute("iteraciones", 1);
+
+        //????????????????????????????????????
         // Añadimos datos marcados por defecto
         /*ArrayList<String> aficionesSeleccionadas = new ArrayList<>();
         aficionesSeleccionadas.add("D");

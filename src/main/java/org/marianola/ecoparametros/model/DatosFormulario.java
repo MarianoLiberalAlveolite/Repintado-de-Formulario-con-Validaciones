@@ -1,9 +1,11 @@
 package org.marianola.ecoparametros.model;
 
+import Validations.*;
 import org.marianola.ecoparametros.Validations.DireccionIp;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -13,7 +15,8 @@ import java.util.List;
 @Setter
 @Getter
 @ToString
-@Builder //Herramienta de Lombok que facilita la creación de objetos
+@ClaveCoincide(message = "{ClaveCoincide.datosFormulario.confirmarClave}")
+@FechaEdadValida(message = "{FechaEdadValida.datosFormulario.fechaNacimiento}")
 public class DatosFormulario {
 
     /* DATOS DE USUARIO */
@@ -39,6 +42,8 @@ public class DatosFormulario {
     @NotNull
     private String paisSeleccionado;
 
+    @NotNull
+    @EsAdulto(message = "{EsAdulto.datosFormulario.fechaNacimiento}")
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     @Past(message ="{Past.datosFormulario.fechaNacimiento}")
     private LocalDate fechaNacimiento;
@@ -59,7 +64,7 @@ public class DatosFormulario {
     @Pattern(regexp = "\\d{9}", message = "{Pattern.datosFormulario.telefono}")
     private String telefono;
 
-    /*@Email (message="{Email.datosFormulario.email}")*/
+    @EmailValido(message = "{EmailValido.datosFormulario.email}")
     private String email;
 
     @DireccionIp (message = "{DireccionIp.datosFormulario.direccionIp}")
@@ -79,4 +84,7 @@ public class DatosFormulario {
 
     @NotNull (message = "{NotNull.datosFormulario.licencia}")
     private Boolean licencia;
+
+    @TipoArchivo (message = "{TipoArchivo.datosFormulario.archivo}")
+    private MultipartFile archivo;
 }

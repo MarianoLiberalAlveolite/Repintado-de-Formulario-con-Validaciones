@@ -1,3 +1,4 @@
+
 //************FUNCIONES*****************
 
 //Función para cambiar de Idioma (Baeldung)
@@ -24,14 +25,13 @@ function deseleccionarRadYCheck(botonesNombre) {
 
 // Seleccionar los 'radios' (género) y los 'checkboxes' (aficiones)
 function seleccionarRadYCheck(checkboxNombre) {
-    const elementos = document.getElementById(checkboxNombre);
+    const elementos = document.getElementsByName(checkboxNombre);
     for (let i = 0; i < elementos.length; i++) {
         if (elementos[i].type === "checkbox") {
             elementos[i].checked = true;
         }
     }
 }
-
 
 // Deseleccionar los 'select' (música)
 function deseleccionarSelect(selectName) {
@@ -73,7 +73,31 @@ function mostrarClave() {
     }
 }
 
-// Funcion generica que vacia el valor de un campo
+// Funcion para vaciar el Formulario
+function vaciarCampos(){
+    document.getElementById("miFormulario").reset();
+
+    // Limpiar los checkboxes de aficiones y música
+    let checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(function(checkbox) {
+        checkbox.checked = false;
+    });
+
+    // Limpiar los radios de género si es necesario
+    let radios = document.querySelectorAll('input[type="radio"]');
+    radios.forEach(function(radio) {
+        radio.checked = false;
+    });
+
+    // Limpiar los selects (dropdown)
+    let selects = document.querySelectorAll('select');
+    selects.forEach(function(select) {
+        select.selectedIndex = -1; // Dejamos sin seleccionar ninguna opción
+    });
+
+}
+
+/*/ Funcion generica que vacia el valor de un campo
 function vaciarTexto(nombreInput) {
     const elementoTexto = document.getElementById(nombreInput);
     if (elementoTexto) {
@@ -101,7 +125,7 @@ function vaciarCampos() {
         deseleccionaSelect(i);
     }
     deseleccionaRadiosYCheckboxes('generoSeleccionado');
-}
+}*/
 
 /* Función que usamos en clase
 $(document).ready(function(){
