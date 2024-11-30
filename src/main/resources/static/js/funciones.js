@@ -6,8 +6,7 @@ $(document).ready(function () {
         var selectedOption = $('#idioma').val();
 
         if (selectedOption !== '') {
-            alert("aleert")
-            let url = '/formulario/devuelve-formulario?lang=' + selectedOption;
+            let url = '/formulario/devuelve-formulario?idioma=' + selectedOption;
             window.location.replace(url);
         }
     });
@@ -73,6 +72,37 @@ function mostrarClave() {
         botonMostrarClaves.innerText = 'Mostrar Claves en Abierto'; // Volvemos a cambiar el texto del botón
     }
 }
+
+// Funcion generica que vacia el valor de un campo
+function vaciarTexto(nombreInput) {
+    const elementoTexto = document.getElementById(nombreInput);
+    if (elementoTexto) {
+        elementoTexto.value = "";
+    }
+}
+
+// Combina la funcion generica de vaciarTexto con una lista a borrar
+function vaciarCampos() {
+    const camposTexto = [
+        "nombre", "clave", "confirmarClave",
+        "fechaNacimiento", "edad", "peso",
+        "telefono", "email", "direccionIp"
+    ]
+    for (let i of camposTexto) {
+        vaciarTexto(vaciarTexto(i));
+    }
+    const camposSelect = [
+        "paisSeleccionado", "prefijoSeleccionado",
+        "musicasSeleccionadas",
+        "aficionesSeleccionadas",
+        "idioma"
+    ]
+    for (let i of camposSelect) {
+        deseleccionaSelect(i);
+    }
+    deseleccionaRadiosYCheckboxes('generoSeleccionado');
+}
+
 /* Función que usamos en clase
 $(document).ready(function(){
     $('#deseleccionarGeneros').on('click', function () {

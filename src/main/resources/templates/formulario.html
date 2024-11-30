@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <!--/* línea en el head para que el favicon no este presente */-->
+    <link rel="icon" href="data:,">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script th:src="@{/js/funciones.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}">
+    <title th:text="#{eco-parametros.titulo}"></title>
+</head>
+<body>
+    <div th:replace="/fragmentos/cabecera.html"></div>
+    <div th:replace="/fragmentos/cuerpo.html"></div>
+</body>
+</html>

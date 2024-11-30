@@ -19,7 +19,7 @@ public class DatosFormulario {
     /* DATOS DE USUARIO */
 
     @NotBlank(message = "{NotBlank.datosFormulario.nombre}")
-    private String nombre;
+    private String nombre = "Lola";
 
     @NotBlank(message = "{NotBlank.datosFormulario.clave}")
     @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!#$%&]).{6,12}$",

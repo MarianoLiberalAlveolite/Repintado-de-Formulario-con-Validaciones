@@ -1,5 +1,6 @@
 package org.marianola.ecoparametros.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.marianola.ecoparametros.model.Colecciones;
 import org.marianola.ecoparametros.model.DatosFormulario;
@@ -8,78 +9,132 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Map;
+import java.util.*;
 
 @Controller
-@RequestMapping("/formulario")
+@RequestMapping("formulario")
 public class PrincipalController {
 
+    // Pequeño metodo que analiza la String userAgent
+    // y nos la traduce para que sea obvia
+    private String getSistemaOperativo(String userAgent) {
+        if (userAgent.contains("Windows")) return "Windows";
+        if (userAgent.contains("Mac")) return "Mac OS";
+        if (userAgent.contains("X11")) return "Unix";
+        if (userAgent.contains("Linux")) return "Linux";
+        return "Desconocido";
+    }
 
-    //Este metodo sirve para declarar los Maps y que sean globales en la clase Controller
+    // Lo mismo con el motor de renderizado usado por el navegador
+    private String getMotorRenderizado(String userAgent) {
+        if (userAgent.contains("WebKit")) return "WebKit";
+        if (userAgent.contains("Gecko")) return "Gecko";
+        if (userAgent.contains("Trident")) return "Trident";
+        return "Desconocido";
+    }
+
+    // Aunamos todos los atributos de modelo comunes a nuestros 2 endpoints principales
     @ModelAttribute
-    private void aniadeAttributesGlobalesAlModelo(Model modelo) {
+    private void agregarAtributosGlobalesAlModelo(Model modelo, HttpServletRequest request, Locale locale) {
+
+        // Creamos una lista para almacenar los nombres de los parametros
+        List<String> parametrosRellenados = new ArrayList<>();
+
+        // Sacamos los nombres de todos los parámetros
+        Enumeration<String> parameterNames = request.getParameterNames();
+        int count = 0;
+
+        // Vamos iterando sobre los parámetros y agregando los que no están vacíos
+        while (parameterNames.hasMoreElements()) {
+            String paramName = parameterNames.nextElement();
+            String paramValue = request.getParameter(paramName);
+
+            if (paramValue != null && !paramValue.isEmpty()) {
+                parametrosRellenados.add(paramName); // Para agregar solo el nombre del parámetro
+            }
+            count++;
+        }
+
+        // Cogemos la información del cliente HTTP con HttpServletRequest
+        String direccionIP = request.getRemoteAddr(); // Dirección IP del cliente
+        String navegador = request.getHeader("User-Agent"); // Navegador usado
+        String sistemaOperativo = getSistemaOperativo(navegador); // Sistema operativo
+        String motorRenderizado = getMotorRenderizado(navegador); // Motor de renderizado
+        String nombreHost = request.getServerName(); // Nombre del host
+        String idiomaYLocale = request.getLocale().toString(); // Idioma y locale preferidos
+
+        // Pasamos los datos al modelo para la vista
+        modelo.addAttribute("parametrosRellenados", parametrosRellenados);
+        modelo.addAttribute("totalParametros", count);
+        modelo.addAttribute("totalRellenados", parametrosRellenados.size());
+
+        // Añadimos la información de la solicitud HTTP al modelo
+        modelo.addAttribute("direccionIP", direccionIP);
+        modelo.addAttribute("navegador", navegador);
+        modelo.addAttribute("sistemaOperativo", sistemaOperativo);
+        modelo.addAttribute("motorRenderizado", motorRenderizado);
+        modelo.addAttribute("nombreHost", nombreHost);
+        modelo.addAttribute("idiomaYLocale", idiomaYLocale);
+
+        // Añadimos también las 4 colecciones que usamos en ambos endpoints
         modelo.addAttribute("generos", Colecciones.getListaGeneros());
         modelo.addAttribute("aficiones", Colecciones.getListaAficiones());
         modelo.addAttribute("paises", Colecciones.getListaPaises());
         modelo.addAttribute("musica", Colecciones.getListaMusica());
+
+        modelo.addAttribute("iteraciones", 1);
+        // Añadimos datos marcados por defecto
+        /*ArrayList<String> aficionesSeleccionadas = new ArrayList<>();
+        aficionesSeleccionadas.add("D");
+        aficionesSeleccionadas.add("P");
+        aficionesSeleccionadas.add("V");*/
+        /*modelo.addAttribute("titulo", "Original");
+        modelo.addAttribute("nombre", "Lola");
+        modelo.addAttribute("paisSeleccionado", "pt");
+        modelo.addAttribute("aficionesSeleccionadas", Arrays.asList("D","P","V"));
+        modelo.addAttribute("prefijoSeleccionado", "fr");
+        modelo.addAttribute("musicasSeleccionadas", Arrays.asList("F", "R"));*/
     }
 
-    @GetMapping("/formulario/lang")
-    public String cambiarLenguaje(@RequestParam ("lang") String lang){
-        return "formulario/vistas/formulario";
+    @PostMapping ("/formulario/lang")
+    public String cambiarLenguaje(@RequestParam ("idioma") String idioma){
+        return "formulario";
     }
 
     @GetMapping ("devuelve-formulario")
     public String devuelveFormularioValidado(
-            Model modelo,
         @ModelAttribute DatosFormulario datosFormulario) {
-        modelo.addAttribute("usuario", "Lola");
-        modelo.addAttribute("pais_seleccionado", "pt"); // Portugal
-        modelo.addAttribute("aficiones_seleccionadas", new ArrayList<String>() {{
-            add("D"); // Deporte
-            add("P"); // Pintura
-            add("V"); // Viajes
-        }});
-        modelo.addAttribute("musica_seleccionada", new ArrayList<String>() {{
-            add("F"); // Funky
-            add("R"); // Rock
-        }});
-        return "formulario/vistas/formulario";
+        return "formulario";
     }
 
 
     @PostMapping("recibe-parametros")
-    public String recibeParametrosYrepinta(
-            @Valid
-            @ModelAttribute DatosFormulario datosFormulario,
-            BindingResult resultadoValidacion,
-            @RequestParam (required = false) Map<String,String> contadorParametros,
-            @RequestParam (defaultValue = "0") int iteraciones,
-            @RequestParam (name= "enviarFlecha.x", required = false, defaultValue = "0") int imagenX,
-            @RequestParam (name= "enviarFlecha.y", required = false, defaultValue = "0") int imagenY,
-            Model modelo
+    public String recibeParametrosYrepinta(Model modelo,
+                                           @Valid DatosFormulario datosFormulario,
+                                           BindingResult resultadoValidacion,
+                                           @RequestParam (name = "iteraciones", required = false) int iteraciones,
+                                           @RequestParam (name= "enviarFlecha.x", required = false, defaultValue = "0") int imagenX,
+                                           @RequestParam (name= "enviarFlecha.y", required = false, defaultValue = "0") int imagenY,
+                                           @RequestParam Map<String, List<String>> mapaParametros
             ) {
-            iteraciones ++;
-            modelo.addAttribute("iteraciones", iteraciones);
-            modelo.addAttribute("contadorParametros", contadorParametros.size());
+            modelo.addAttribute("iteraciones", ++iteraciones);
             modelo.addAttribute("imagenX", imagenX);
             modelo.addAttribute("imagenY", imagenY);
+            modelo.addAttribute("paramPasados", mapaParametros);
+            modelo.addAttribute("paramNum", mapaParametros.size());
+            modelo.addAttribute("paisSeleccionado", datosFormulario.getPaisSeleccionado());
+            modelo.addAttribute("musicasSeleccionadas", datosFormulario.getMusicasSeleccionadas());
+            modelo.addAttribute("aficionesSeleccionadas", datosFormulario.getAficionesSeleccionadas());
+            modelo.addAttribute("comentarios", datosFormulario.getComentarios());
+
             if (resultadoValidacion.hasErrors()){
                 modelo.addAttribute("mensajeNOK","ALERTA: Formulario con errores.");
-                return "formulario/vistas/formulario";
+                return "formulario";
             }
             modelo.addAttribute("mensajeOK","ALELUYA: Formulario sin errores.");
 
-        return "formulario/vistas/formulario";
+        return "formulario";
     }
-    //Prueba de sintaxis para ver como funciona fragmentos
-    /*
-    @GetMapping("devuelvePruebaformulario")
-    public String devuelvePruebaFormulario(Model modelo) {
-        modelo.addAttribute("vista","formulario_practica1.html");
-        return "principal";
-    }*/
 
     /* *************** IGNORAR *********************
        ******* MÉTODOS DE LA PRÁCTICA ANTERIOR ********************
