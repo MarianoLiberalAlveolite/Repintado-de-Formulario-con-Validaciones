@@ -99,10 +99,10 @@ public class PrincipalController {
         modelo.addAttribute("musicasSeleccionadas", Arrays.asList("F", "R"));*/
     }
 
-    @PostMapping ("/formulario/lang")
-    public String cambiarLenguaje(@RequestParam ("idioma") String idioma){
-        return "formulario";
-    }
+//    @PostMapping ("/formulario/lang")
+//    public String cambiarLenguaje(@RequestParam ("idioma") String idioma){
+//        return "formulario";
+//    }
 
     @GetMapping ("devuelve-formulario")
     public String devuelveFormularioValidado(

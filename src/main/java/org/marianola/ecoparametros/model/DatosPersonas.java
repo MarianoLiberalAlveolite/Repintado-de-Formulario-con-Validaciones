@@ -3,6 +3,8 @@ package org.marianola.ecoparametros.model;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -37,20 +39,25 @@ public class DatosPersonas {
 
     public static List<Persona> getListaPersonas() { return listaPersonas;}
 
-    public static Persona getPersonaPorId(Long id) {
-        /* for (Persona persona : listaPersonas) {
-            if (persona.getId().equals(id)) {
-                return persona;
-            }
-        }
-        return null; */
+    public static Optional<Persona> getPersonaPorId(Long id) {
+        //Versión con Optional
+        return listaPersonas.stream()
+                //.filter(persona -> persona.getId().equals(id))
+                .filter(persona -> Objects.equals(persona.getId(), id))
+                .findFirst(); //ya devuelve un Optional
+
+        //Version sin Optional
+
         //Retornamos una Persona, que se obtiene con 'filter' que busca una coincidencia
         //'findFirst()' busca la primera coincidencia obtenida con el 'filter'
         //si no la encuentra devuelve 'null'
-        return listaPersonas.stream()
-                .filter(persona -> persona.getId().equals(id))
+
+        /*return listaPersonas.stream()
+                .map(persona -> Optional.of(persona))
+                //map(Optional::of) = línea equivalente a la anterior
+                .filter(persona -> persona.get().getId().equals(id))
                 .findFirst()
-                .orElse(null);
+                .orElse(Optional.empty());*/
     }
 
     public static void removeTodasPersonas() {

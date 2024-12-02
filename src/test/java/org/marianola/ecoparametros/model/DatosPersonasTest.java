@@ -10,6 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -23,26 +24,26 @@ public class DatosPersonasTest {
 
         Persona personaPrueba = new Persona(idEmpleado, "Pepe",  LocalDate.of(2000, 1, 2), 72.36F);
 
-        Persona personaRecuperada = DatosPersonas.getPersonaPorId(idEmpleado);
+        Optional<Persona> personaRecuperada = DatosPersonas.getPersonaPorId(idEmpleado);
 
         // Assert
         assertNotNull(personaRecuperada);
-        assertEquals(personaPrueba.getId(), personaRecuperada.getId());
-        assertEquals(personaPrueba.getNombre(), personaRecuperada.getNombre());
-        assertEquals(personaPrueba.getFechaNacimiento(), personaRecuperada.getFechaNacimiento());
+        assertEquals(personaPrueba.getId(), personaRecuperada.get().getId());
+        assertEquals(personaPrueba.getNombre(), personaRecuperada.get().getNombre());
+        assertEquals(personaPrueba.getFechaNacimiento(), personaRecuperada.get().getFechaNacimiento());
         //assert.equals(personaPrueba, PersonaRecuperada);
     }
 
     @Test
     public void testGetPersonaPorId_NoEncontrado() {
-        long idEmpleado = 3L;
+        long idEmpleado = 5L;
         //No haría falta declarar toda la persona, solo con el ID bastaría
-        Persona personaPrueba = new Persona(3L, "Lolo",  LocalDate.of(1996, 5, 6), 79.62F);
+//        Persona personaPrueba = new Persona(3L, "Lolo",  LocalDate.of(1996, 5, 6), 79.62F);
 
-        Persona personaRecuperada = DatosPersonas.getPersonaPorId(idEmpleado);
+        Optional<Persona> personaRecuperada = DatosPersonas.getPersonaPorId(idEmpleado);
 
         // Assert
-        assertNull(personaRecuperada);
+        assertFalse(personaRecuperada.isPresent());
     }
 
     @Test
@@ -56,8 +57,6 @@ public class DatosPersonasTest {
 
     @Test
     public void testAddPersona_Existe() {
-        long idEmpleado = 1L;
-
         Persona personaPrueba = new Persona(1L, "Pepe",  LocalDate.of(2000, 1, 2), 72.36F);
 
         // Assert
@@ -66,8 +65,6 @@ public class DatosPersonasTest {
 
     @Test
     public void testAddPersona_NoExiste() {
-        long idEmpleado = 3L;
-
         Persona personaPrueba = new Persona(3L, "Lolo",  LocalDate.of(1996, 5, 6), 79.62F);
 
         // Assert

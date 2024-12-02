@@ -7,6 +7,7 @@ import org.marianola.ecoparametros.model.Persona;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PersonaServiceImpl implements PersonaService {
@@ -21,11 +22,11 @@ public class PersonaServiceImpl implements PersonaService {
     public Persona devuelvePersonaPorId(Long id) {
         // Busca una persona por ID.
         // Si no la encuentra, lanza una excepción personalizada
-        Persona persona = DatosPersonas.getPersonaPorId(id);
-        if (persona == null)
+        Optional<Persona> optionalPersona = DatosPersonas.getPersonaPorId(id);
+        if (optionalPersona.isEmpty())
             throw new PersonaNoEncontradaException(
                     "La persona con id " + id + ", no existe.");
-        return persona;
+        return optionalPersona.get();
     }
 
 

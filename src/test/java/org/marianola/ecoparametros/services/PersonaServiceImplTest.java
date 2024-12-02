@@ -1,10 +1,10 @@
-package org.marianola.ecoparametros.model;
+package org.marianola.ecoparametros.services;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.marianola.ecoparametros.exception.PersonaNoEncontradaException;
 import org.marianola.ecoparametros.exception.PersonaYaCreadaException;
-import org.marianola.ecoparametros.services.PersonaServiceImpl;
+import org.marianola.ecoparametros.model.Persona;
 
 import java.time.LocalDate;
 import java.util.List;
