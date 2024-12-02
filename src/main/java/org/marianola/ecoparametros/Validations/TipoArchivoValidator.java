@@ -1,4 +1,4 @@
-package Validations;
+package org.marianola.ecoparametros.Validations;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

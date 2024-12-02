@@ -1,13 +1,14 @@
 package org.marianola.ecoparametros.model;
 
-import Validations.*;
-import org.marianola.ecoparametros.Validations.DireccionIp;
+import org.marianola.ecoparametros.Validations.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
+import org.marianola.ecoparametros.Validations.DireccionIp;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -40,7 +41,7 @@ public class DatosFormulario {
     private String generoSeleccionado;
 
     @NotNull
-    private String paisSeleccionado;
+    private String paisSeleccionado = "pt";
 
     @NotNull
     @EsAdulto(message = "{EsAdulto.datosFormulario.fechaNacimiento}")
@@ -58,7 +59,7 @@ public class DatosFormulario {
     /* DATOS DE CONTACTO */
 
     @NotNull
-    private String prefijoSeleccionado;
+    private String prefijoSeleccionado = "fr";
 
     @NotNull
     @Pattern(regexp = "\\d{9}", message = "{Pattern.datosFormulario.telefono}")
@@ -74,11 +75,11 @@ public class DatosFormulario {
 
     @NotNull
     @Size(min = 1, message = "{Size.datosFormulario.musicasSeleccionadas}")
-    private List<String> aficionesSeleccionadas;
+    private List<String> aficionesSeleccionadas = aficionesDefecto();
 
     @NotNull
     @Size(min = 1, message = "{Size.datosFormulario.aficionesSeleccionadas}")
-    private List<String> musicasSeleccionadas;
+    private List<String> musicasSeleccionadas = musicasDefecto();
 
     private String comentarios;
 
@@ -87,4 +88,20 @@ public class DatosFormulario {
 
     @TipoArchivo (message = "{TipoArchivo.datosFormulario.archivo}")
     private MultipartFile archivo;
+
+    // List con valores por defecto de Aficiones
+    private List<String> aficionesDefecto(){
+        aficionesSeleccionadas = new ArrayList<>();
+        aficionesSeleccionadas.add("D");
+        aficionesSeleccionadas.add("P");
+        aficionesSeleccionadas.add("V");
+        return aficionesSeleccionadas;
+    }
+    // List con valores por defecto de tipos de Música
+    private List<String> musicasDefecto(){
+        musicasSeleccionadas = new ArrayList<>();
+        musicasSeleccionadas.add("F");
+        musicasSeleccionadas.add("P");
+        return musicasSeleccionadas;
+    }
 }

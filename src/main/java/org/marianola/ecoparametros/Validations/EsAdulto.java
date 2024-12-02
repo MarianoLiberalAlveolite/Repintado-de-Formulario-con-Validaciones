@@ -1,4 +1,4 @@
-package Validations;
+package org.marianola.ecoparametros.Validations;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
@@ -8,11 +8,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Constraint(validatedBy = EmailValidoValidator.class) // Vinculamos al validador
-@Target(ElementType.FIELD) // Se aplica a nivel de campo
+@Constraint(validatedBy = { EsAdultoValidator.class })
+@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface EmailValido {
-    String message() default "El correo electrónico no tiene un formato válido.";
+public @interface EsAdulto {
+    String message() default "Debe ser mayor de 18 años";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

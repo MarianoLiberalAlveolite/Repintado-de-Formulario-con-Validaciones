@@ -44,6 +44,9 @@ public class DatosPersonas {
             }
         }
         return null; */
+        //Retornamos una Persona, que se obtiene con 'filter' que busca una coincidencia
+        //'findFirst()' busca la primera coincidencia obtenida con el 'filter'
+        //si no la encuentra devuelve 'null'
         return listaPersonas.stream()
                 .filter(persona -> persona.getId().equals(id))
                 .findFirst()
@@ -56,26 +59,40 @@ public class DatosPersonas {
     }
 
     public static boolean addPersona(Persona persona) {
+        // + anyMatch(condición) = devuelve boolean
         if (!listaPersonas.stream().anyMatch(p -> p.getId().equals(persona.getId()))) {
             return listaPersonas.add(persona);
         }
         return false;
     }
 
-    /*public static Persona updatePersona(Long id, ) {
+    public static Persona updatePersona(Persona personaActualizada) {
+        //Convertimos una lista nueva en un 'stream' de nuestra lista (BBDD)
+        //Con 'map' convertimos/cambiamos cada elemento que cumpla con una condición
+        // + en este caso que coincidan por Id, si coinciden la actualizo (machacando la anterior), si no coinciden no hago nada
+        //Lo hago utilizando un operador ternario
+        //Con 'collect(Collectors.toList()) = hacemos que el stream vuelva a ser una lista
+        List<Persona> nuevaLista = listaPersonas.stream()
+                .map(p -> p.getId().equals(personaActualizada.getId()) ? personaActualizada : p)
+                .collect(Collectors.toList());
 
-        Persona persona = getPersonaPorId(id);
-        if (persona == null) {
-            addPersona(persona);
-        } else {
-            Persona p = listaPersonas.stream().anyMatch(persona::equals) ? persona : null;
-            if (p != null) {
+        // Verificamos si la persona fue actualizada usando un booleano
+        // + anyMatch(condición) = devuelve boolean
+        boolean personaEncontrada = nuevaLista.stream()
+                .anyMatch(p -> p.getId().equals(personaActualizada.getId()));
 
-            }
+        // Si no se encuentra la persona, notificar y agregarla a la lista
+        if (!personaEncontrada) {
+            System.out.printf("La persona %s con ID %d no existe en la BBDD, procedemos a insertarla.\n",personaActualizada.getNombre(), personaActualizada.getId());
+            nuevaLista.add(personaActualizada);
         }
 
-        return persona;
-    }*/
+        // Reemplazar la lista original con la nueva lista
+        listaPersonas = nuevaLista;
+
+        // Retornar la persona actualizada o añadida
+        return personaActualizada;
+    }
 
     public static boolean deletePersona(Long id) {
          return listaPersonas.removeIf(persona -> persona.getId().equals(id));
