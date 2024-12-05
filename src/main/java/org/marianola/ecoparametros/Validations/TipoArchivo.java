@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD) // Se aplica a nivel de campo
 @Retention(RetentionPolicy.RUNTIME) // Se mantiene en tiempo de ejecución
 public @interface TipoArchivo {
-    String message() default "El archivo debe ser un documento PDF o una imagen JPG, JPEG o GIF.";
+    String message() default "{TipoArchivo.datosFormulario.archivo}";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

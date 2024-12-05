@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE) // La anotación se aplica a nivel de clase
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ClaveCoincide {
-    String message() default "Las claves no coinciden.";
+    String message() default "{ClaveCoincide.datosFormulario.confirmarClave}";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

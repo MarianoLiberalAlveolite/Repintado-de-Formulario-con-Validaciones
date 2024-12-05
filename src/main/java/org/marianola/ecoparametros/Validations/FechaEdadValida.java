@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE) // Aplica a nivel de clase
 @Retention(RetentionPolicy.RUNTIME)
 public @interface FechaEdadValida {
-    String message() default "La edad no coincide con la fecha de nacimiento.";
+    String message() default "{FechaEdadValida.datosFormulario.fechaNacimiento}";
 
     Class<?>[] groups() default {};
 

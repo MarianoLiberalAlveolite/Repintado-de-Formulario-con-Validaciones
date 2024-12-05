@@ -16,8 +16,8 @@ import java.util.List;
 @Setter
 @Getter
 @ToString
-@ClaveCoincide(message = "{ClaveCoincide.datosFormulario.confirmarClave}")
-@FechaEdadValida(message = "{FechaEdadValida.datosFormulario.fechaNacimiento}")
+@ClaveCoincide
+@FechaEdadValida
 public class DatosFormulario {
 
     /* DATOS DE USUARIO */
@@ -86,8 +86,9 @@ public class DatosFormulario {
     @NotNull (message = "{NotNull.datosFormulario.licencia}")
     private Boolean licencia;
 
-    @TipoArchivo (message = "{TipoArchivo.datosFormulario.archivo}")
-    private MultipartFile archivo;
+    @NotNull
+    @Pattern ( regexp = "^.+\\.(?i)(pdf|jpg|jpeg|gif)$", message = "{TipoArchivo.datosFormulario.archivo}")
+    private String archivo;
 
     // List con valores por defecto de Aficiones
     private List<String> aficionesDefecto(){

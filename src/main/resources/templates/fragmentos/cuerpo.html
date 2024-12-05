@@ -22,6 +22,9 @@
 <p th:text="'Iteración: ' + ${iteraciones}"></p>
 
 <form method="post" action="recibe-parametros" enctype="multipart/form-data" id="miFormulario" th:object="${datosFormulario}">
+  <div th:if="${#fields.hasGlobalErrors()}">
+    <p class="error" th:each="err: ${#fields.globalErrors()}" th:text="${err}"></p>
+  </div>
 
   <!-- Campo oculto para iteraciones -->
   <input type="hidden" id="iteraciones" name="iteraciones" th:value="${iteraciones}"/>
@@ -166,6 +169,8 @@
              th:checked="${aficionesSeleccionadas != null && aficionesSeleccionadas.contains(aficion.key)}">
       <span th:text="${aficion.value}"></span>
     </div>
+    <div th:each="error : ${#fields.errors('aficionesSeleccionadas')}"
+         th:text="${error}" class="error"></div>
 
     <input type="button" id="deseleccionarCheckboxes" th:value="#{eco-parametros.deseleccionarCheckboxes}" onclick="deseleccionarRadYCheck('aficionesSeleccionadas')" tabindex="16">
 
@@ -183,6 +188,8 @@
               th:text="${music.value}"
               th:selected="${musica_seleccionada != null && musica_seleccionada.contains(music.key)}">
     </select>
+    <div th:each="error : ${#fields.errors('musicasSeleccionadas')}"
+         th:text="${error}" class="error"></div>
     <br>
     <input type="button" id="deseleccionarSelectM" th:value="#{eco-parametros.deseleccionarSelectM}" onclick="deseleccionarSelect('musicasSeleccionadas')" tabindex="19">
     <input type="button" id="seleccionarSelectM" th:value="#{eco-parametros.seleccionarSelectM}" onclick="seleccionarSelect('musicasSeleccionadas')" tabindex="20">
@@ -198,9 +205,12 @@
     <legend th:text="#{eco-parametros.otros}"></legend>
     <br>
     <!--/* ARCHIVO */-->
-    <label for="archivo" th:text="#{eco-parametros.archivo}"></label>
-    <input type="file" id="archivo" tabindex="21" name="archivo" th:text th:value="#{eco-parametros.examinar}">
+    <span class="indicador">&#9658;</span><label for="archivo" th:text="#{eco-parametros.archivo}"></label>
+    <input type="file" multiple="multiple" id="archivo" tabindex="21" name="archivo"  th:field="*{archivo}">
     <p th:text="${archivo != null ? 'Archivo seleccionado: ' + archivo : ''}"></p>
+
+    <div th:each="error : ${#fields.errors('archivo')}"
+         th:text="${error}" class="error"></div>
 
     <!--/* COMENTARIOS */-->
     <label for="comentarios" th:text="#{eco-parametros.comentarios}"></label>
