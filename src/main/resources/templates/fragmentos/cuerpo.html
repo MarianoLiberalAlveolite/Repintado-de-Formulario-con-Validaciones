@@ -126,7 +126,7 @@
     <select name="prefijoSeleccionado" tabindex="11" id="prefijoSeleccionado" th:field="*{prefijoSeleccionado}">
       <option th:each="entry: ${paises}"
               th:value="${entry.key}"
-              th:text="'+' + ${entry.value.getPrefijoTelefonicoPais()}"
+              th:text="'+' + ${entry.value.getPrefijoTelefonicoPais()} +' '+${entry.value.getNombreArchivoBandera()}"
               th:selected="${prefijoSeleccionado != null && entry.key==prefijoSeleccionado} ? 'selected'">
       </option>
     </select>
