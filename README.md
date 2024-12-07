@@ -6,3 +6,6 @@ Algunas de las validaciones proceden de anotaciones propias.
 Se complementa con algunas funciones sencillas codificadas en JS.
 Además se pone en práctica el uso de fragmentos.
 Se usa el motor de plantillas: Thymeleaf.
+
+[Modelo API REST]
+También incluye un esbozo de proyecto implementando este modelo.
