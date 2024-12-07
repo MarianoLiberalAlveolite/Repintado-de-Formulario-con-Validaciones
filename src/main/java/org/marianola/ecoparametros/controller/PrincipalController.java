@@ -84,25 +84,7 @@ public class PrincipalController {
 
         //Iniciamos las iteraciones a '1'
         modelo.addAttribute("iteraciones", 1);
-
-        //????????????????????????????????????
-        // Añadimos datos marcados por defecto
-        /*ArrayList<String> aficionesSeleccionadas = new ArrayList<>();
-        aficionesSeleccionadas.add("D");
-        aficionesSeleccionadas.add("P");
-        aficionesSeleccionadas.add("V");*/
-        /*modelo.addAttribute("titulo", "Original");
-        modelo.addAttribute("nombre", "Lola");
-        modelo.addAttribute("paisSeleccionado", "pt");
-        modelo.addAttribute("aficionesSeleccionadas", Arrays.asList("D","P","V"));
-        modelo.addAttribute("prefijoSeleccionado", "fr");
-        modelo.addAttribute("musicasSeleccionadas", Arrays.asList("F", "R"));*/
     }
-
-//    @PostMapping ("/formulario/lang")
-//    public String cambiarLenguaje(@RequestParam ("idioma") String idioma){
-//        return "formulario";
-//    }
 
     @GetMapping ("devuelve-formulario")
     public String devuelveFormularioValidado(
@@ -140,7 +122,8 @@ public class PrincipalController {
     }
 
     /* *************** IGNORAR *********************
-       ******* MÉTODOS DE LA PRÁCTICA ANTERIOR ********************
+
+    * ******* MÉTODOS DE LA PRÁCTICA ANTERIOR ********************
 
 
     //Este metodo devuelve el formulario vacío y es desde donde se inicia la aplicación

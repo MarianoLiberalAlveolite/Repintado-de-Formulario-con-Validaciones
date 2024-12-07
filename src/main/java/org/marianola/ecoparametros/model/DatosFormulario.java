@@ -5,7 +5,6 @@ import jakarta.validation.constraints.*;
 import lombok.*;
 import org.marianola.ecoparametros.Validations.DireccionIp;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

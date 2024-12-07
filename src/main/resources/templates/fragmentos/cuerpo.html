@@ -206,7 +206,7 @@
     <br>
     <!--/* ARCHIVO */-->
     <span class="indicador">&#9658;</span><label for="archivo" th:text="#{eco-parametros.archivo}"></label>
-    <input type="file" multiple="multiple" id="archivo" tabindex="21" name="archivo"  th:field="*{archivo}">
+    <input type="file" multiple="multiple" id="archivo"  th:value="#{eco-parametros.examinar}" tabindex="21" name="archivo"  th:field="*{archivo}">
     <p th:text="${archivo != null ? 'Archivo seleccionado: ' + archivo : ''}"></p>
 
     <div th:each="error : ${#fields.errors('archivo')}"
